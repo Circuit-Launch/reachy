@@ -1,0 +1,115 @@
+:mod:`reachy.io.cam`
+====================
+
+.. py:module:: reachy.io.cam
+
+.. autoapi-nested-parse::
+
+   Wrapper around two RPI and the multi channel switch.
+
+   It relies on the use of the Multi_Adapter_Board_2Channel_uc444 for switching camera via the I2C and GPIO control.
+
+   See https://github.com/ArduCAM/RaspberryPi/tree/master/Multi_Camera_Adapter/Multi_Adapter_Board_2Channel_uc444
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   reachy.io.cam.DualCamera
+   reachy.io.cam.BackgroundVideoCapture
+
+
+
+.. py:class:: DualCamera(default_camera='right')
+
+   Bases: :class:`object`
+
+   Wrapper around two RPI and the multi channel switch.
+
+   .. method:: __exit__(self)
+
+
+      Automatically close the cam on exit.
+
+
+   .. method:: close(self)
+
+
+      Close the camera capture.
+
+
+   .. method:: active_side(self)
+      :property:
+
+
+      Get the active camera side.
+
+
+   .. method:: set_active(self, camera_side)
+
+
+      Set one of the camera active (left or right).
+
+
+   .. method:: read(self)
+
+
+      Get the latest retrieved frame.
+
+
+   .. method:: _enable_left_camera(self)
+
+
+      Enable the left eye camera.
+
+      See https://github.com/ArduCAM/RaspberryPi/tree/master/Multi_Camera_Adapter/Multi_Adapter_Board_2Channel_uc444
+
+
+   .. method:: _enable_right_camera(self)
+
+
+      Enable the left eye camera.
+
+      See https://github.com/ArduCAM/RaspberryPi/tree/master/Multi_Camera_Adapter/Multi_Adapter_Board_2Channel_uc444
+
+
+
+.. py:class:: BackgroundVideoCapture(camera_index, resolution=(720, 960))
+
+   Bases: :class:`object`
+
+   Wrapper on OpenCV VideoCapture object.
+
+   :param camera_index: index of the used camera (see OpenCV doc for details)
+   :type camera_index: int
+   :param resolution: desired resolution for the grabbed frame (the resolution must be compatible with the driver)
+   :type resolution: int, int
+
+   Instantiating this object will automatically start the polling of image in background.
+
+   This wrapper is reponsible for automatically polling image on the camera.
+   This ensures that we can always access the most recent image.
+
+   .. method:: close(self)
+
+
+      Stop polling image and release the Video Capture.
+
+
+   .. method:: _read_loop(self)
+
+
+
+   .. method:: read(self)
+
+
+      Retrieve the last grabbed image.
+
+
+
